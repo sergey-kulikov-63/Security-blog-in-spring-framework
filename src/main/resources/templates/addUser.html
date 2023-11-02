@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Зарегистрироваться</title>
+</head>
+<body>
+<div class="container">
+    <form th:action="@{/adduser}" method="post" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Имя" required><br>
+        <input type="text" name="username" id="username" placeholder="Логин" required><br>
+        <input type="password" name="password" placeholder="Пароль" required><br>
+        Аватар: <input type="file" style="margin: 15px" name="file" accept=".jpg, .jpeg, .png"><br>
+        <span th:if="${errorMessage}" class="error-message">
+            <p style="color: red; margin-top: -5px" th:text="${errorMessage}"></p>
+        </span>
+        <input type="submit" value="Зарегистрироваться">
+    </form>
+</div>
+</body>
+</html>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    .container {
+        margin: 100px auto;
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #5b5959;
+        border-radius: 10px;
+        background-color: #fafafa;
+    }
+    input[type="text"], input[type="password"] {
+        width: 90%;
+        padding: 10px;
+        margin: 10px auto;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        background-color: #000000;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>

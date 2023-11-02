@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить запись</title>
+</head>
+<body>
+<div class="container">
+    <form th:action="@{/addpost}" method="post" enctype="multipart/form-data">
+        <input style="width: 250px" type="text" name="postTitle" placeholder="Название" required><br><br>
+        <pre>
+            <textarea name="postText" placeholder="Текст" cols="100" rows="20" required></textarea><br><br>
+        </pre>
+        <input style="width: 250px" type="text" name="postUrl" placeholder="URL (через тире)" required><br><br>
+        <input type="file" name="file" accept=".jpg, .jpeg, .png" required><br><br>
+        <input type="submit" value="ADD">
+    </form>
+</div>
+</body>
+</html>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    input[type="text"], textarea {
+        width: 90%;
+        padding: 10px;
+        margin: 10px auto;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        background-color: #000000;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>

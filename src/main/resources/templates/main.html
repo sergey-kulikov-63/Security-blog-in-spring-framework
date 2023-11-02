@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body style="display:none">
+<header>
+    <div class="menu-icon" onclick="toggleOverlay()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div id="overlay" class="overlay">
+        <div id="overlay-content" class="overlay-content">
+            <div sec:authorize="hasRole('USER')">
+                <div style="margin-top: 50px">
+                    <a style="text-decoration: none; color: white" th:href="'/users/' + ${user.getUsername()}">
+                        <img th:src="'data:image/jpeg;base64,' + ${user.getImage()}" height="150">
+                        <br>
+                        <h1 th:text="${user.getName()} + ' (' + ${user.getUsername()} + ')'"></h1>
+                    </a>
+                </div>
+                <div style="margin-top: 375px">
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" value="Выход"/>
+                    </form>
+                </div>
+            </div>
+            <div sec:authorize="hasRole('ADMIN')">
+                <div style="margin-top: 50px">
+                    <a style="text-decoration: none; color: white" th:href="'/users/' + ${user.getUsername()}">
+                    <img th:src="'data:image/jpeg;base64,' + ${user.getImage()}" height="150">
+                    <h1 th:text="${user.getName()} + ' (' + ${user.getUsername()} + ')'"></h1>
+                    </a>
+                    <form th:action="@{/addpost}" method="get">
+                        <input style="border-radius: 25px; padding: 10px 15px" type="submit" value="+"/>
+                    </form>
+                </div>
+                <div style="margin-top: 375px">
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" value="Выход"/>
+                    </form>
+                </div>
+            </div>
+            <div sec:authorize="isAnonymous()">
+                <div  style="text-align: center">
+                    <form th:action="@{/login}">
+                        <input type="submit" value="Войти">
+                    </form>
+                    <br>
+                    <h4>или</h4>
+                    <br>
+                    <form action="/adduser">
+                        <input type="submit" value="Зарегистрироваться">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <div th:each="post:${posts}" class="posttable">
+        <a th:href="'/posts/' + ${post.getPostUrl()}">
+            <div class="post">
+                <img th:src="'data:image/jpeg;base64,' + ${post.getPostMainImage()}" width="290px"
+                     style="border-radius: 2%">
+                <p th:text="${post.getPostTitle()}"></p>
+            </div>
+        </a>
+    </div>
+</main>
+<footer>
+</footer>
+<script defer>
+    document.addEventListener('DOMContentLoaded',function (){
+        setTimeout(function () {
+            document.body.style.display = 'block';
+        }, 1000)
+    });
+
+    function toggleOverlay() {
+        var overlay = document.getElementById('overlay');
+        if (overlay.style.width === '30%') {
+            overlay.style.width = '0';
+        } else {
+            overlay.style.width = '30%';
+        }
+    }
+</script>
+</body>
+</html>
+<style>
+    .posttable {
+        display: flex;
+        flex-wrap: wrap;
+        margin: auto 85px;
+    }
+    header {
+        position: fixed;
+        top: 0;
+        height: 80px;
+        background-color: #333;
+        width: 100%;
+    }
+    footer {
+        height: 80px;
+        background-color: #333;
+        width: 100%;
+    }
+    main {
+        margin-top: 80px;
+        padding: 35px;
+    }
+    .post{
+        width: 294px;
+        height: 250px;
+        margin: 10px 10px 50px;
+        padding: 2px;
+        border-radius: 2%;
+        border: #adaaaa solid 1px;
+        background-color: #d0cece;
+    }
+    .post:hover{
+        transform: scale(1.1);
+    }
+    main a:hover{
+        text-decoration: none;
+    }
+    .post p {
+        margin-top: 10px;
+        font-weight: bold;
+        text-align: center;
+        color: black;
+        text-decoration: none;
+    }
+    .menu-icon {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 1;
+        cursor: pointer;
+    }
+    .menu-icon div {
+        width: 35px;
+        height: 5px;
+        background-color: white;
+        margin: 6px 0;
+        transition: 0.3s;
+    }
+    input[type="submit"] {
+        background-color: #000000;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.84);
+        overflow-x: hidden;
+        transition: 0.5s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .overlay-content {
+        text-align: center;
+        color: white;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: none;
+    }
+</style>
